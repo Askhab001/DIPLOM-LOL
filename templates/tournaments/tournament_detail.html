@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tournament.name }}</title>
+</head>
+<body>
+    <h1>{{ tournament.name }}</h1>
+    <p><strong>Description:</strong> {{ tournament.description }}</p>
+    <p><strong>Dates:</strong> {{ tournament.start_date }} - {{ tournament.end_date }}</p>
+    <p><strong>Location:</strong> {{ tournament.location }}</p>
+
+    <h2>Participants</h2>
+    <ul>
+        {% for participant in tournament.participants.all %}
+            <li>{{ participant.name }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

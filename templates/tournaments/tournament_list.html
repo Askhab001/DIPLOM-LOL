@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+{% extends 'tournaments/base_generic.html' %}
+
+{% block title %}Tournament List{% endblock %}
+
+{% block content %}
+<h1>Список турниров</h1>
+<ul>
+    {% for tournament in object_list %}
+        <li>
+            <a href="{% url 'tournament_detail' tournament.pk %}">{{ tournament.name }}</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'tournament_create' %}">Создать новый турнир</a>
+{% endblock %}
+</body>
+</html>

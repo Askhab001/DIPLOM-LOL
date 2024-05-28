@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Tournament App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'tournaments/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>My Tournament App</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'tournament_list' %}">Home</a></li>
+                <li><a href="{% url 'tournament_create' %}">Create Tournament</a></li>
+                <li><a href="{% url 'select_tournament'%}">Select</a></li>
+                <li><a href="{% url 'register'%}">Register</a></li>
+
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 My Tournament App</p>
+    </footer>
+</body>
+</html>
