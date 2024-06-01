@@ -1,16 +1,19 @@
+<!-- your_app/templates/your_app/tournament_list.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tournament List</title>
 </head>
 <body>
-<h1>Удалить турнир</h1>
-<p>Вы уверены, что хотите удалить турнир "{{ tournament.name }}"? </p>
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Удалить</button>
-</form>
-<a href="{% url 'tournament_list' %}">Отмена</a>
+    <h1>Tournaments</h1>
+    <ul>
+        {% for tournament in tournaments %}
+            <li>
+                {{ tournament.name }}
+                <a href="{% url 'delete_tournament' tournament.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,  reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -58,8 +58,8 @@ class TournamentUpdateView(UpdateView):
 
 class TournamentDeleteView(DeleteView):
     model = Tournament
-    template_name = 'tournaments/tournament_confirm_delete.html'
     success_url = reverse_lazy('tournament_list')
+    template_name = 'tournament/delete_tournaments.html'
 
 
 class ParticipantCreateView(CreateView):
@@ -117,6 +117,7 @@ def delete_tournament(request, tournament_id):
     tournament = Tournament.objects.get(pk=tournament_id)
     if request.method == 'POST':
         tournament.delete()
-        return redirect('tournament_list')  # Перенаправление на список турниров
+        return redirect('tournament_list')
     context = {'tournament': tournament}
     return render(request, 'tournaments/delete_tournament.html', context)
+
