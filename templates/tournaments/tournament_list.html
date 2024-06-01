@@ -21,7 +21,18 @@
         </li>
     {% endfor %}
 </ul>
-<a href="{% url 'tournament_create' %}">Создать новый турнир</a>
+
 {% endblock %}
+
+<h1>Список турниров</h1>
+<ul>
+    {% for tournament in tournaments %}
+        <li>
+            <a href="#">{{ tournament.name }}</a>
+            <a href="{% url 'delete_tournament' tournament.id %}">Удалить</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'create_tournament' %}">Создать турнир</a>
 </body>
 </html>

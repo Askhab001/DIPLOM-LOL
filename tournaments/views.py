@@ -1,8 +1,35 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from .models import Tournament, Participant, Schedule, Result
 from .forms import TournamentSelectionForm, UserRegistrationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')  # Замените 'home' на имя вашего представления для главной страницы
+    else:
+        form = UserCreationForm()
+    return render(request, 'accounts/register.html', {'form': form})
+
+
+class LoginView(LoginView):
+    template_name = 'accounts/login.html'
+
+
+@login_required
+def profile(request):
+    user = request.user
+    context = {'user': user}
+    return render(request, 'accounts/profile.html', context)
 
 
 class TournamentListView(ListView):
@@ -47,20 +74,17 @@ class ScheduleListView(ListView):
     template_name = 'tournaments/schedule_list.html'
 
 
-class ResultCreateView(CreateView):
-    model = Result
-    fields = ['schedule', 'result']
-    template_name = 'tournaments/result_form.html'
-    success_url = reverse_lazy('tournament_list')
-
+def ResultCreateView(request):
+    results = Result.objects.all()
+    print(results)
+    return render(request, 'tournaments/result_form.html', {'results': results})
 
 def select_tournament(request):
     if request.method == 'POST':
         form = TournamentSelectionForm(request.POST)
         if form.is_valid():
             selected_tournament = form.cleaned_data['tournament']
-            # Выполните действия с выбранным турниром, например, добавьте его к пользователю
-            # Здесь вы можете выполнить логику для участия пользователя в выбранном турнире
+
             return redirect('tournament_detail', tournament_id=selected_tournament.id)
     else:
         form = TournamentSelectionForm()
@@ -72,7 +96,6 @@ def tournament_detail(request, tournament_id):
     return render(request, 'tournaments/tournament_detail.html', {'tournament': tournament})
 
 
-
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -82,3 +105,18 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
+@login_required
+def delete_tournament(request, tournament_id):
+    tournament = Tournament.objects.get(pk=tournament_id)
+    if request.method == 'POST':
+        tournament.delete()
+        return redirect('tournament_list')  # Перенаправление на список турниров
+    context = {'tournament': tournament}
+    return render(request, 'tournaments/delete_tournament.html', context)

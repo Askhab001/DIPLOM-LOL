@@ -39,8 +39,8 @@ class Schedule(models.Model):
 
 
 class Result(models.Model):
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
-    result = models.CharField(max_length=100)
+        name = models.CharField(max_length=100)
+        score = models.IntegerField()
 
-    def __str__(self):
-        return f"{self.schedule} - {self.result}"
+        def __str__(self):
+            return f'{self.name} - {self.score}'

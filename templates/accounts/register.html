@@ -6,11 +6,11 @@
     <title>User Registration</title>
 </head>
 <body>
-    <h1>User Registration</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
+<h1>Регистрация</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зарегистрироваться</button>
+</form>
 </body>
 </html>
