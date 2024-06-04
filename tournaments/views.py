@@ -15,7 +15,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')  # Замените 'home' на имя вашего представления для главной страницы
+            return redirect('home')
     else:
         form = UserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
@@ -74,9 +74,10 @@ class ScheduleListView(ListView):
     template_name = 'tournaments/schedule_list.html'
 
 
+
 def ResultCreateView(request):
     results = Result.objects.all()
-    print(results)
+
     return render(request, 'tournaments/result_form.html', {'results': results})
 
 def select_tournament(request):
@@ -120,4 +121,5 @@ def delete_tournament(request, tournament_id):
         return redirect('tournament_list')
     context = {'tournament': tournament}
     return render(request, 'tournaments/delete_tournament.html', context)
+
 

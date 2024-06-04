@@ -3,22 +3,19 @@
 <html>
 <head>
     <title>{% block title %}My Tournament App{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
 <body>
     <header>
         <h1>My Tournament App</h1>
         <nav>
             <ul>
-                <li><button><a href="{% url 'tournament_list' %}">Home</a></button></li>
-                <li><button><a href="{% url 'tournament_create' %}">Create Tournament</a></button></li>
-                <li><button><a href="{% url 'select_tournament'%}">Select</a></button></li>
-                <li><button><a href="{% url 'register'%}">Register</a></button></li>
-                <li><button><a href="{% url 'profile' %}">Profile</a></button></li>
-                <li><button><a href="{% url 'result_form' %}">Result</a></button></li>
-
-
-
+                <button><span><a href="{% url 'tournament_list' %}">Home</a></span></button>
+                <button><span><a href="{% url 'tournament_create' %}">Create Tournament</a></span></button>
+                <button><span><a href="{% url 'select_tournament'%}">Select</a></span></button>
+                <button><span><a href="{% url 'register'%}">Register</a></span></button>
+                <button><span><a href="{% url 'profile' %}">Profile</a></span></button>
+                <button><span><a href="{% url 'result_form' %}">Result</a></span></button>
             </ul>
         </nav>
     </header>
@@ -26,9 +23,7 @@
         {% block content %}
         {% endblock %}
     </main>
-    <footer>
-        <p>&copy; 2024 My Tournament App</p>
-    </footer>
 
+<script src="{% static 'main.js' %}"></script>
 </body>
 </html>

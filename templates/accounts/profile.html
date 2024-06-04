@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="{% static 'list.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
 <body>
     <header>
@@ -15,10 +15,10 @@
         {% endif %}
         <nav>
             <ul>
-                <li><button><a href="{% url 'tournament_create' %}">Главная</a></button></li>
-                <li><button><a href="https://t.me/Skyazafly13">О нас</a></button></li>
+                <button><span><a href="{% url 'tournament_list' %}">Главная</a></span></button>
+                <button><span><a href="https://t.me/Skyazafly13">О нас</a></span></button>
                 {% if user.is_authenticated %}
-                    <li><button><a href="{% url 'logout' %}">Выйти</a></button></li>
+                    <button><span><a href="{% url 'logout' %}">Выйти</a></span></button>
                 {% else %}
                     <li><button><a href="{% url 'login' %}">Вход</a></button></li>
                     <li><button><a href="{% url 'register' %}">Регистрация</a></button></li>
@@ -33,5 +33,6 @@
     <footer>
         <p>&copy; 2024 Мой сайт</p>
     </footer>
+<script src="{% static 'main.js' %}"></script>
 </body>
 </html>

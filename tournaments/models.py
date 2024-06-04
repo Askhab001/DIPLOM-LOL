@@ -39,8 +39,21 @@ class Schedule(models.Model):
 
 
 class Result(models.Model):
-        name = models.CharField(max_length=100)
-        score = models.IntegerField()
+    name = models.OneToOneField(User, on_delete=models.CASCADE)
+    score = models.IntegerField()
+
+    def str(self):
+        return f'{self.name} - {self.score}'
+
+    class MatchResult(models.Model):
+        team1 = models.CharField(max_length=100)
+        team2 = models.CharField(max_length=100)
+        score1 = models.IntegerField()
+        score2 = models.IntegerField()
+        date = models.DateField()
 
         def __str__(self):
-            return f'{self.name} - {self.score}'
+            return f"{self.team1} vs {self.team2} on {self.date}"
+
+
+
