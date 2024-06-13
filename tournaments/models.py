@@ -2,14 +2,34 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+from django.contrib.auth.models import User
+from django.db import models
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    age = models.IntegerField()
+    phone_number = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+class Team(models.Model):
+    name = models.CharField(max_length=100)
+    players = models.ManyToManyField(Player)
+
+    def __str__(self):
+        return self.name
 
 
 class Tournament(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.TextField()
     start_date = models.DateField()
@@ -21,12 +41,12 @@ class Tournament(models.Model):
 
 
 class Participant(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     registration_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.tournament.name}"
+        return f"{self.team.name} - {self.tournament.name}"
 
 
 class Schedule(models.Model):
@@ -39,21 +59,6 @@ class Schedule(models.Model):
 
 
 class Result(models.Model):
-    name = models.OneToOneField(User, on_delete=models.CASCADE)
+    match = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
     score = models.IntegerField()
-
-    def str(self):
-        return f'{self.name} - {self.score}'
-
-    class MatchResult(models.Model):
-        team1 = models.CharField(max_length=100)
-        team2 = models.CharField(max_length=100)
-        score1 = models.IntegerField()
-        score2 = models.IntegerField()
-        date = models.DateField()
-
-        def __str__(self):
-            return f"{self.team1} vs {self.team2} on {self.date}"
-
-
-

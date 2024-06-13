@@ -36,12 +36,20 @@ class TournamentListView(ListView):
     model = Tournament
     template_name = 'tournaments/tournament_list.html'
 
+from .forms import TournamentForm
+@login_required
+def create_tournament(request):
+    if request.method == 'POST':
+        form = TournamentForm(request.POST)
+        if form.is_valid():
+            tournament = form.save(commit=False)
+            tournament.creator = request.user
+            tournament.save()
+            return redirect(reverse_lazy('tournament_list'))
+    else:
+        form = TournamentForm()
+    return render(request, 'tournaments/tournament_form.html', {'form': form})
 
-class TournamentCreateView(CreateView):
-    model = Tournament
-    fields = ['name', 'description', 'start_date', 'end_date', 'location']
-    template_name = 'tournaments/tournament_form.html'
-    success_url = reverse_lazy('tournament_list')
 
 
 class TournamentDetailView(DetailView):

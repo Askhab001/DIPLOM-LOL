@@ -14,3 +14,12 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+from django import forms
+from .models import Tournament
+
+class TournamentForm(forms.ModelForm):
+    class Meta:
+        model = Tournament
+        fields = ['name', 'description', 'start_date', 'end_date', 'location']
