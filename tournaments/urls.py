@@ -2,6 +2,7 @@ from django.urls import path
 from .views import select_tournament, tournament_detail, ResultCreateView, TournamentDeleteView
 from . import views
 from django.contrib.auth import views as auth_views
+from .views import add_team_to_tournament, create_team, add_player_to_team, set_score, view_team_results
 
 urlpatterns = [
     path('', views.TournamentListView.as_view(), name='tournament_list'),
@@ -18,6 +19,10 @@ urlpatterns = [
     path('accounts/profile/', views.profile, name='profile'),
     path('logout/', views.logout_view, name='logout'),
     path('result/', ResultCreateView, name='result_form'),
-
+    path('add-team-to-tournament/', add_team_to_tournament, name='add_team_to_tournament'),
+    path('create-team/', create_team, name='create_team'),
+    path('add-player-to-team/<int:team_id>/', add_player_to_team, name='add_player_to_team'),
+    path('set-score/<int:schedule_id>/', set_score, name='set_score'),
+path('team-results/<int:team_id>/', view_team_results, name='team_results'),
 
 ]

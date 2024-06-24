@@ -130,4 +130,101 @@ def delete_tournament(request, tournament_id):
     context = {'tournament': tournament}
     return render(request, 'tournaments/delete_tournament.html', context)
 
+# views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import ParticipantForm
 
+@login_required
+def add_team_to_tournament(request):
+    if request.method == 'POST':
+        form = ParticipantForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tournament_list')
+    else:
+        form = ParticipantForm()
+    return render(request, 'tournaments/add_team_to_tournament.html', {'form': form})
+
+# views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import TeamForm, PlayerForm
+from .models import Team
+
+@login_required
+def create_team(request):
+    if request.method == 'POST':
+        form = TeamForm(request.POST)
+        if form.is_valid():
+            team = form.save(commit=False)  # Сначала не сохраняем команду, добавляем создателя
+            team.user = request.user  # Устанавливаем создателя команды
+            team.save()  # Теперь сохраняем команду
+            return redirect('add_player_to_team', team_id=team.id)
+    else:
+        form = TeamForm()
+    return render(request, 'tournaments/create_team.html', {'form': form})
+@login_required
+def add_player_to_team(request, team_id):
+    team = Team.objects.get(id=team_id)
+    if request.method == 'POST':
+        form = PlayerForm(request.POST)
+        if form.is_valid():
+            player = form.save(commit=False)
+            player.team = team
+            player.save()
+            return redirect('add_player_to_team', team_id=team.id)
+    else:
+        form = PlayerForm()
+    return render(request, 'tournaments/add_player_to_team.html', {'form': form, 'team': team})
+
+
+# views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Tournament, Schedule, Result
+from .forms import ResultForm
+
+@login_required
+def set_score(request, schedule_id):
+    schedule = get_object_or_404(Schedule, pk=schedule_id)
+    tournament = schedule.tournament
+    if request.user != tournament.creator:
+        return render(request, '403.html')  # Возвращаем страницу с ошибкой доступа, если пользователь не создатель турнира
+
+    if request.method == 'POST':
+        form = ResultForm(request.POST)
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.match = schedule
+            result.save()
+            return redirect('tournament_detail', pk=tournament.pk)
+    else:
+        form = ResultForm()
+    return render(request, 'tournaments/set_score.html', {'form': form, 'schedule': schedule})
+
+
+# views.py
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Team, Participant, Result, Tournament
+
+
+@login_required
+def view_team_results(request, team_id):
+    team = get_object_or_404(Team, id=team_id)
+    # Убедимся, что пользователь имеет право видеть результаты этой команды
+    if request.user != team.user:
+        return render(request,
+                      '403.html')  # Возвращаем страницу с ошибкой доступа, если пользователь не владелец команды
+
+    # Получаем все турниры, в которых участвовала команда
+    tournaments = Tournament.objects.filter(participant__team=team).distinct()
+    results = Result.objects.filter(team=team).select_related('match').order_by('-match__match_date')
+
+    context = {
+        'team': team,
+        'tournaments': tournaments,
+        'results': results
+    }
+    return render(request, 'tournaments/team_results.html', context)

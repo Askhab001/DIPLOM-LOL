@@ -10,7 +10,7 @@ class Profile(models.Model):
 
 
 class Player(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     age = models.IntegerField()
@@ -23,6 +23,7 @@ class Player(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=100)
     players = models.ManyToManyField(Player)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
