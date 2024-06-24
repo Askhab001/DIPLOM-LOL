@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="{% static 'list.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
 <body>
 
@@ -16,6 +16,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Login</button>
+    <script src="{% static 'main.js' %}"></script>
 </form>
 {% endblock %}
 
