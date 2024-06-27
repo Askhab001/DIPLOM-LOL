@@ -14,7 +14,7 @@
                 <button><span><a href="{% url 'tournament_create' %}">Create Tournament</a></span></button>
                 <button><span><a href="{% url 'select_tournament'%}">Select</a></span></button>
                 {% if not user.is_authenticated %}
-                <button><span><a href="{% url 'register' %}">Зарегистрироваться</a></span></button>
+                <button><span><a href="{% url 'register' %}">Register</a></span></button>
                 {% endif %}
                 <button><span><a href="{% url 'profile' %}">Profile</a></span></button>
                 <button><span><a href="{% url 'result_form' %}">Result</a></span></button>

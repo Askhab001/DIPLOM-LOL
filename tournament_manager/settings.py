@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-&ve^3)gj8i3c0)cctod))!cdkfsj-3r%hn-s-exfvk-idgxzpg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['Tourstore'
+                 'www.Tourstore.com']
 
 
 # Application definition
