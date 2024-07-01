@@ -28,16 +28,13 @@ DEBUG = True
 ALLOWED_HOSTS = ['tourstore.student-project-it-academy.tw1.ru'
                  'www.tourstore.student-project-it-academy.tw1.ru']
 CSRF_TRUSTED_ORIGINS = [
+    'https://tourstore.student-project-it-academy.tw1.ru',
+    'https://www.tourstore.student-project-it-academy.tw1.ru',
+]
 
-'https://tourstore.student-project-it-academy.tw1.ru',
-
-'https://www.tourstore.student-project-it-academy.tw1.ru ',
-
- ]
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-# Application definition
 
 INSTALLED_APPS = [
     'tournaments',
