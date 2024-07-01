@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
 <body>
+<form method="post">
+    {% csrf_token %}
+</form>
     <header>
         <h1>My Tournament App</h1>
         <nav>
