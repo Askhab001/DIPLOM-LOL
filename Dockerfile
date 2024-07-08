@@ -7,10 +7,10 @@ WORKDIR /app
 # Копируем requirements.txt и устанавливаем зависимости
 COPY requirements.txt /app/
 
-RUN pip install -r req.txt
+RUN pip install -r requirements.txt
 
 # Копируем весь проект в контейнер
-COPY ../../../Downloads /app/
+COPY . /app/
 
 # Выполняем миграции и собираем статические файлы
 RUN python manage.py migrate
