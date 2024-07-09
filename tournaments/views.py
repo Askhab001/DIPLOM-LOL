@@ -110,7 +110,7 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Перенаправляем пользователя на страницу входа после успешной регистрации
+            return redirect('login')
     else:
         form = UserRegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
@@ -130,8 +130,6 @@ def delete_tournament(request, tournament_id):
     context = {'tournament': tournament}
     return render(request, 'tournaments/delete_tournament.html', context)
 
-# views.py
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ParticipantForm
 
@@ -146,8 +144,7 @@ def add_team_to_tournament(request):
         form = ParticipantForm()
     return render(request, 'tournaments/add_team_to_tournament.html', {'form': form})
 
-# views.py
-from django.shortcuts import render, redirect
+
 from django.contrib.auth.decorators import login_required
 from .forms import TeamForm, PlayerForm
 from .models import Team
@@ -157,9 +154,9 @@ def create_team(request):
     if request.method == 'POST':
         form = TeamForm(request.POST)
         if form.is_valid():
-            team = form.save(commit=False)  # Сначала не сохраняем команду, добавляем создателя
-            team.user = request.user  # Устанавливаем создателя команды
-            team.save()  # Теперь сохраняем команду
+            team = form.save(commit=False)
+            team.user = request.user
+            team.save()
             return redirect('add_player_to_team', team_id=team.id)
     else:
         form = TeamForm()
@@ -179,7 +176,6 @@ def add_player_to_team(request, team_id):
     return render(request, 'tournaments/add_player_to_team.html', {'form': form, 'team': team})
 
 
-# views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Tournament, Schedule, Result
@@ -190,7 +186,7 @@ def set_score(request, schedule_id):
     schedule = get_object_or_404(Schedule, pk=schedule_id)
     tournament = schedule.tournament
     if request.user != tournament.creator:
-        return render(request, '403.html')  # Возвращаем страницу с ошибкой доступа, если пользователь не создатель турнира
+        return render(request, '403.html')
 
     if request.method == 'POST':
         form = ResultForm(request.POST)
@@ -213,12 +209,11 @@ from .models import Team, Participant, Result, Tournament
 @login_required
 def view_team_results(request, team_id):
     team = get_object_or_404(Team, id=team_id)
-    # Убедимся, что пользователь имеет право видеть результаты этой команды
+
     if request.user != team.user:
         return render(request,
-                      '403.html')  # Возвращаем страницу с ошибкой доступа, если пользователь не владелец команды
+                      '403.html')
 
-    # Получаем все турниры, в которых участвовала команда
     tournaments = Tournament.objects.filter(participant__team=team).distinct()
     results = Result.objects.filter(team=team).select_related('match').order_by('-match__match_date')
 
