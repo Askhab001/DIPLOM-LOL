@@ -23,7 +23,7 @@
 	right: 2rem;
 }
 body {
-
+    color: white;
 	display: left;
 	place-items: left;
 	gap: 1rem;
@@ -31,7 +31,7 @@ body {
 	justify-content: center;
 	min-height: 100vh;
 	font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue", Helvetica, Arial, sans-serif, system-ui;
-	background: repeating-linear-gradient(45deg, black, transparent 100px);
+	background: repeating-linear-gradient(45deg, black, purple  100px);
 }
 button {
 	border-radius: 1rem;
@@ -45,7 +45,7 @@ button {
 	background:
 		linear-gradient(var(--bg), var(--bg)) padding-box,
 		var(--glow),
-		linear-gradient(black, black) border-box;
+		linear-gradient(white, purple) border-box;
 	transition: background-size 0.24s;
 	touch-action: none;
 	position: relative;
